@@ -4,10 +4,9 @@ import requests
 check_lists = list()
 separ_newline = '\n'
 with open('bookmarks.html', 'r', encoding='utf8') as file:
-    out_file = file.read()
-links_list = list(out_file.split(separ_newline))#преобразую из хтмла в список
-print(links_list)
-comp = re.compile(r'((http|https)://[A-Za-z0-9\.\?\&_\s=/-]+)')
+    in_file = file.read()
+links_list = list(in_file.split(separ_newline))#преобразую из хтмла в список
+comp = re.compile(r'((http|https)://[A-Za-z0-9\.\?\&_\s=/-]+)')#доработать!! не воспринимает русские ссылки и пробелы
 for box_str in links_list:
     link_n = comp.search(box_str)#извлекает из списка регулярным выражением ссылки
     if link_n:
@@ -19,8 +18,8 @@ for idx, value in enumerate(check_lists):
         continue
     else:
         try:
-            req = requests.request('GET', value, timeout=10)# allow_redirects=False на всякий случай
-            if req.status_code >= 200 and req.status_code < 300:
+            req = requests.request('GET', value, timeout=10)# allow_redirects=False на всякий случай!
+            if req.status_code >= 200 and req.status_code < 300:#проверка ссылок
                 continue
             elif req.status_code >= 300 and req.status_code < 400:
                 print("3xx возможна блокировка ", value)
@@ -31,9 +30,14 @@ for idx, value in enumerate(check_lists):
                 print("delete ", value)
             elif req.status_code >= 500:
                 print("ошибка сервера ", req.status_code, " ", idx, " ",value)
+            else:
+                print("unknow error", value)
         except requests.ConnectionError:
             del links_list[idx]
-            print("Error delete ",value)
+            print("Error delete ", value)
         except requests.exceptions.Timeout:
-            print("Error time")
-print(links_list)
+            print("Error time", value)
+out_file = separ_newline.join(links_list)
+with open('bookmarks2.html', 'wt', encoding='utf8') as file:
+    file.write(out_file)
+# print(links_list)
