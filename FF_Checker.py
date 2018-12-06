@@ -2,6 +2,7 @@ import re
 import requests
 
 check_lists = list()
+proxies = {'http':'http://37.157.197.120:3128'}
 separ_newline = '\n'
 with open('bookmarks.html', 'r', encoding='utf8') as file:
     in_file = file.read()
@@ -18,7 +19,7 @@ for idx, value in enumerate(check_lists):
         continue
     else:
         try:
-            req = requests.request('GET', value, timeout=10)# allow_redirects=False на всякий случай!
+            req = requests.request('GET', value, timeout=10, proxies=proxies)# allow_redirects=False на всякий случай!
             if req.status_code >= 200 and req.status_code < 300:#проверка ссылок
                 continue
             elif req.status_code >= 300 and req.status_code < 400:
