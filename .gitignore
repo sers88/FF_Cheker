@@ -2,6 +2,7 @@
 test
 bookmarks*
 *vscode/*
+geckodriver.exe
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
