@@ -10,7 +10,7 @@ separ_newline = '\n'
 with open('bookmarks.html', 'r', encoding='utf8') as file:
     in_file = file.read()
 links_list = list(in_file.split(separ_newline))#преобразую из хтмла в список
-comp = re.compile(r'((http|https)://[A-Za-z0-9\u0410-\u044F\.\?\&_\s=/-]+)')#доработать!! не воспринимает русские ссылки и пробелы
+comp = re.compile(r'((http|https)://[A-Za-z0-9\.\?\&_\s=/-]+)')#доработать!! не воспринимает русские ссылки и пробелы
 for box_str in links_list:
     link_n = comp.search(box_str)#извлекает из списка регулярным выражением ссылки
     if link_n:
